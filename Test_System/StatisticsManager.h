@@ -6,4 +6,5 @@ class StatisticsManager {
 
  public:
   StatisticsManager(const Person& user);
+  void ShowStats();
 };

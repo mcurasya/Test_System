@@ -118,6 +118,7 @@ bool MainMenuManager::doAction(Action a) {
       tm.ContinueTest();
       break;
     case Action::SHOW_RESULT:
+      sm.ShowStats();
       break;
     case Action::ADD_USER: {
       LoginManager lm;
@@ -137,8 +138,16 @@ bool MainMenuManager::doAction(Action a) {
       std::cin >> login;
       DeleteUser(login);
     } break;
-    case Action::SHOW_STATS:
-      break;
+    case Action::SHOW_STATS: {
+      std::cout << "enter user to look up stats >>> ";
+      std::string login;
+      std::cin >> login;
+      if (!fs::exists(CreateUserFilepath(login))) {
+        throw std::invalid_argument("sorry, such user does not exist");
+      }
+      StatisticsManager(Person(login)).ShowStats();
+
+    } break;
     case Action::ADD_CATEGORY: {
       std::cout << "enter new category name >> ";
       std::string cat;
