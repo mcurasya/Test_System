@@ -59,7 +59,9 @@ void TestManager::AddQuestion(std::string category, std::string test) {
   }
   std::cout << "enter question\n >>> ";
   std::string q;
-  std::getline(std::cin, q);
+  do {
+    std::getline(std::cin, q);
+  } while (q == "");
   std::cout << "enter amount of answers >>> ";
   std::vector<std::string> answers;
   int count;
@@ -67,16 +69,18 @@ void TestManager::AddQuestion(std::string category, std::string test) {
   for (size_t i = 0; i < count; i++) {
     std::cout << "enter answer >>> ";
     std::string answer;
-    std::getline(std::cin, answer);
+    do {
+      std::getline(std::cin, answer);
+    } while (answer == "");
     answers.push_back(answer);
   }
   std::cout << "enter number of correct answer >>> ";
   int correct;
   std::cin >> correct;
 
-  std::ofstream fout(os.str());
+  std::ofstream fout(os.str(), std::ios::app);
   Question question(q, answers, correct);
-  fout << question << std::endl << std::endl;
+  question.Dump(fout);
   fout.close();
 }
 
@@ -90,8 +94,8 @@ void TestManager::DoTest() {
   std::ostringstream cat_stream;
   cat_stream << DATABASE_FOLDER << "\\" << TESTS_FOLDER << "\\" << cat;
   std::ostringstream os;
-  os << DATABASE_FOLDER << "\\" << TESTS_FOLDER << "\\" << cat << "\\"
-     << test << TEST_FILE_FORMAT;
+  os << DATABASE_FOLDER << "\\" << TESTS_FOLDER << "\\" << cat << "\\" << test
+     << TEST_FILE_FORMAT;
   if (!fs::exists(os.str())) {
     throw std::logic_error("sorry, such test does not exist");
   }

@@ -7,7 +7,7 @@ std::ostream& operator<<(std::ostream& os, const Question& question) {
   os << question.getQuestionText() << std::endl;
   auto answers = question.getAnswers();
   for (size_t i = 0; i < answers.size(); i++) {
-    os << i + 1 << answers[i] << std::endl;
+    os << i + 1 << " " << answers[i] << std::endl;
   }
   return os;
 }
@@ -18,12 +18,19 @@ std::istream& operator>>(std::istream& is, Question& question) {
   int correct;
 
   int answerCount;
-  std::getline(is, q);
+  do {
+    std::getline(is, q);
+    if (!is) {
+      return is;
+    }
+  } while (q == "");
   is >> answerCount;
 
   for (size_t i = 0; i < answerCount; i++) {
     std::string answer;
-    std::getline(is, answer);
+    do {
+      std::getline(is, answer);
+    } while (answer == "");
     answers.push_back(answer);
   }
   is >> correct;
@@ -56,8 +63,7 @@ Question::Question() {}
 void Question::Dump(std::ofstream& stream) {
   stream << questionText << std::endl << answers.size() << std::endl;
   for (const auto& answer : answers) {
-    std::cout << answer << std::endl;
+    stream << answer << std::endl;
   }
-  std::cout << correctAnswer << std::endl << std::endl;
-
+  stream << correctAnswer << std::endl << std::endl;
 }

@@ -41,7 +41,7 @@ Test::Test(std::string category,
     fin >> q;
     questions.push_back(q);
   }
-  answersCount = questions.size();
+  answersCount = questions.size() - 1;
   p = tested;
 }
 
@@ -54,13 +54,13 @@ void Test::Run() {
   }
   std::cout << "test finished you have " << correctAnswers << "/"
             << answersCount << "right answers, your score is "
-            << correctAnswers / answersCount * 12;
+            << correctAnswers * 12 / answersCount << std::endl;
   std::ostringstream os;
   os << DATABASE_FOLDER << "\\" << USERS_FOLDER << "\\" << p.getLogin() << "\\"
      << p.getLogin() << STATISTICS_FILE_FORMAT;
   std::ofstream fout(os.str(), std::ios::app);
   fout << cat << " " << filename << " " << correctAnswers << "/" << answersCount
-       << " " << correctAnswers / answersCount * 12 << std::endl;
+       << " " << correctAnswers * 12 / answersCount << std::endl;
   fout.close();
 }
 
